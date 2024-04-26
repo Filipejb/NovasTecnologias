@@ -9,16 +9,18 @@ def salvar_contato():
         print("Nome já adicionado.")
         return
     contato = []
-    for dado in lista_dados:
+    for dado in lista_dados[1:]: 
         valor = input(f"{dado.capitalize()}: ")
         contato.append(valor)
-    agenda[nome] = contato
+    agenda[nome] = [nome] + contato  
     print("Contato salvo com sucesso.")
 
-    # Salvar o novo contato no arquivo CSV
     with open('contatos.csv', 'a', newline='') as arquivo:
         writer = csv.writer(arquivo)
-        writer.writerow(contato)
+        writer.writerow(agenda[nome])
+
+
+
 
 def alterar_contato():
     nome = input("Qual nome do contato que deseja alterar: ")
@@ -54,13 +56,6 @@ def excluir_contato():
     else:
         print("Contato não encontrado.")
 
-def salvar_em_csv():
-    with open('contatos.csv', 'w', newline='') as arquivo:
-        writer = csv.writer(arquivo)
-        writer.writerow(lista_dados)
-        for contato in agenda.values():
-            writer.writerow(contato)
-
 while True:
     print("""
     Agenda Pessoal
@@ -69,7 +64,6 @@ while True:
     3 - Buscar Contato
     4 - Listar Contatos
     5 - Excluir Contato
-    6 - Salvar em CSV
     0 - Sair
     """)
 
@@ -85,8 +79,6 @@ while True:
         listar_contatos()
     elif opcao == 5:
         excluir_contato()
-    elif opcao == 6:
-        salvar_em_csv()
     elif opcao == 0:
         break
     else:
