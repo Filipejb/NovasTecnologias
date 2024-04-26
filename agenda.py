@@ -1,68 +1,93 @@
+import csv
 
-agenda ={}
-lisat_dados=["nome"," telefone", "email", "data de nscimento"]
+agenda = {}
+lista_dados = ["nome", "telefone", "email", "data de nascimento"]
 
+def salvar_contato():
+    nome = input("Nome: ")
+    if nome in agenda:
+        print("Nome já adicionado.")
+        return
+    contato = []
+    for dado in lista_dados:
+        valor = input(f"{dado.capitalize()}: ")
+        contato.append(valor)
+    agenda[nome] = contato
+    print("Contato salvo com sucesso.")
 
-while = 1:
+    # Salvar o novo contato no arquivo CSV
+    with open('contatos.csv', 'a', newline='') as arquivo:
+        writer = csv.writer(arquivo)
+        writer.writerow(contato)
 
-    ope = int(input("""
+def alterar_contato():
+    nome = input("Qual nome do contato que deseja alterar: ")
+    if nome not in agenda:
+        print("Contato não encontrado.")
+        return
+    print(agenda[nome])
+    campo = input("Qual dado deseja alterar: ")
+    if campo not in lista_dados:
+        print("Campo inválido.")
+        return
+    novo_dado = input(f"Digite o novo {campo}: ")
+    agenda[nome][lista_dados.index(campo)] = novo_dado
+    print("Contato alterado com sucesso.")
 
-
-
-
-                 agenda pessoal
-                 1-salvar contato
-                 2-alterar contato
-                 3-buscar contato
-                 4-listar contato
-                 5-excluir contato
-                 pressione 0 para sair
-                 
-
-
-
-     """))
-
-    if ope == 1:
-        
-        contato = []
-        contato.append(input("nome:"))
-        contato.append( input("email:"))
-        contato.appendinput(input("telefone:"))
-        contato.appendinput(input("data de nascimento:"))
-        agenda[nome]= contato,
-
-        if nome == nome:
-            pritn("nome ja adicionado")
-        else:
-        print("contato salvo com sucesso")
-    elif ope == 2:
-        print("alterar contato")
-        nome = input("qual nome")
+def buscar_contato():
+    nome = input("Qual contato deseja buscar: ")
+    if nome in agenda:
         print(agenda[nome])
-        campo = input("qual dado")
-        print(f"voce quer alterar{ agenda[nome][lista_dados.index(campo)]}?")
-        novo_dado = input("qual nova informacao")
-        agenda[nome][lista_dados.index(campo)]= novo_dado
-        print(f"contato alterado {agenda[nome]}")
-                     
-        
-    elif ope == 3:
-        print("buscar contato")
-        nome = input("qual contato:")
-        print(agenda[nome])
-    elif ope == 4:
-        print("listar contato")
+    else:
+        print("Contato não encontrado.")
+
+def listar_contatos():
+    print("Lista de Contatos:")
+    for nome, contato in agenda.items():
+        print(nome, contato)
+
+def excluir_contato():
+    nome = input("Qual contato deseja excluir: ")
+    if nome in agenda:
+        del agenda[nome]
+        print("Contato excluído.")
+    else:
+        print("Contato não encontrado.")
+
+def salvar_em_csv():
+    with open('contatos.csv', 'w', newline='') as arquivo:
+        writer = csv.writer(arquivo)
+        writer.writerow(lista_dados)
         for contato in agenda.values():
-            print(contato)
-    elif ope == 5:
-        print("excluir contato")
-        nome = input("qual contato")
-        contato=agenda[nome]
-       if contato == agenda.pop(nome)
-        print("contato apagado")
-    elif ope == 0:
+            writer.writerow(contato)
+
+while True:
+    print("""
+    Agenda Pessoal
+    1 - Salvar Contato
+    2 - Alterar Contato
+    3 - Buscar Contato
+    4 - Listar Contatos
+    5 - Excluir Contato
+    6 - Salvar em CSV
+    0 - Sair
+    """)
+
+    opcao = int(input("Escolha uma opção: "))
+
+    if opcao == 1:
+        salvar_contato()
+    elif opcao == 2:
+        alterar_contato()
+    elif opcao == 3:
+        buscar_contato()
+    elif opcao == 4:
+        listar_contatos()
+    elif opcao == 5:
+        excluir_contato()
+    elif opcao == 6:
+        salvar_em_csv()
+    elif opcao == 0:
         break
     else:
-        print("opcao invalida")
-
+        print("Opção inválida.")
